@@ -39,7 +39,6 @@ const SelectImpl = component$<Props>((props) => {
     isCreatable,
     onCreate,
     onClear,
-    closeOnOutsideClick,
     selectedOptions = [],
   } = props
 
