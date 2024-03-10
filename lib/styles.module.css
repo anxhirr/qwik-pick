@@ -1,0 +1,16 @@
+.qp-container {
+  max-width: min-content;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.qp-container:focus-within {
+  border-color: #007bff;
+}
+
+.qp-wrapper {
+  padding: 0.5rem;
+  display: flex; /* flex */
+  align-items: center;
+  width: 100%;
+}

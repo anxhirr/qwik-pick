@@ -15,13 +15,13 @@ import { Input } from "./components/Input"
 import { ClearButton } from "./components/Buttons"
 import { Menu } from "./components/Dropdown"
 import { InputContext } from "./store/input"
+import styles from "./styles.module.css"
 
 export interface Props {
   value: string | undefined
   options: OptionType[]
   placeholder?: string
   onSelect: ParentEmitFnType
-  onClear?: () => void
   isMulti?: boolean
   isCreatable?: true
   onCreate?: ParentEmitFnType
@@ -38,7 +38,6 @@ const SelectImpl = component$<Props>((props) => {
     isMulti,
     isCreatable,
     onCreate,
-    onClear,
     selectedOptions = [],
   } = props
 
@@ -78,11 +77,6 @@ const SelectImpl = component$<Props>((props) => {
     }
   )
 
-  const handleClear = $(() => {
-    clearInput()
-    onClear?.()
-  })
-
   useTask$(({ track }) => {
     // populates initial options
     track(() => options)
@@ -96,12 +90,8 @@ const SelectImpl = component$<Props>((props) => {
   })
 
   return (
-    <div class={"relative max-w-xs"}>
-      <div
-        class={
-          "min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 p-2"
-        }
-      >
+    <div class={styles["qp-container"]}>
+      <div class={styles["qp-wrapper"]}>
         {isMulti && (
           <div class="flex flex-wrap items-center gap-2 overflow-hidden">
             <Slot />
@@ -111,7 +101,7 @@ const SelectImpl = component$<Props>((props) => {
           <Input placeholder={placeholder} />
         </>
 
-        <ClearButton onClear={handleClear} />
+        <ClearButton />
       </div>
       {showMenuSig.value && (
         <div class="absolute top-[100%] z-50 w-full">

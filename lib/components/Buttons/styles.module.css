@@ -1,4 +1,11 @@
 .qp-clear-button {
-  max-width: 1rem;
-  max-height: 1rem;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  border-radius: 1rem;
+  padding: 0.25rem;
+}
+
+.qp-clear-button:hover {
+  background-color: #f0f0f0;
 }

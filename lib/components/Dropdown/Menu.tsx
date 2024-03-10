@@ -3,6 +3,7 @@ import { OptionType, SelectHandlerType } from "../../types"
 import { Option } from "."
 import { MenuContext } from "../../store/menu"
 import { InputContext } from "../../store/input"
+import styles from "./styles.module.css"
 
 export const Menu = component$<{
   options: OptionType[]
@@ -16,13 +17,14 @@ export const Menu = component$<{
   const { inputSig } = useContext(InputContext)
 
   return (
-    <div ref={menuRef} class="rounded-lg bg-secondary">
+    <div ref={menuRef} class={styles["qp-menu"]}>
       <ul>
         {options.map((opt, i) => (
           <Option
             key={opt.value}
             label={opt.label}
             onSelect={$(() => onSelect(opt, i))}
+            isSelected={opt.value === inputSig.value}
           />
         ))}
 

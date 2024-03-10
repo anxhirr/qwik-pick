@@ -1,11 +1,19 @@
-import { QRL, component$ } from "@builder.io/qwik"
+import { component$, useContext } from "@builder.io/qwik"
 import styles from "./styles.module.css"
+import { InputContext } from "../../store/input"
 
-export const ClearButton = component$<{
-  onClear: QRL<(e: Event) => void>
-}>((props) => {
+export const ClearButton = component$<{}>(() => {
+  const {
+    actions: { clearInput, focusInput },
+  } = useContext(InputContext)
   return (
-    <div class={styles["qp-clear-button"]} onClick$={props.onClear}>
+    <div
+      class={styles["qp-clear-button"]}
+      onClick$={() => {
+        clearInput()
+        focusInput()
+      }}
+    >
       <svg
         width="100%"
         height="100%"
