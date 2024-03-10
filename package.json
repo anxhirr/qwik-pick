@@ -1,0 +1,29 @@
+{
+  "name": "qwik-pick",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "preview": "serve dist",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "^1.5.1",
+    "@types/node": "^20.11.25",
+    "serve": "^14.2.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4",
+    "vite-plugin-dts": "^3.7.3",
+    "vite-plugin-lib-inject-css": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@builder.io/qwik": "^1.5.1"
+  }
+}
