@@ -13,11 +13,7 @@ export const ClearButton = component$<{}>(() => {
   return (
     <div
       class={styles["qp-clear-button"]}
-      onClick$={() => {
-        clearInput()
-        focusInput()
-        filter()
-      }}
+      onClick$={() => clearInput().then(focusInput).then(filter)}
     >
       <svg
         width="100%"

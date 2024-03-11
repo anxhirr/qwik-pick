@@ -19,6 +19,7 @@ export interface Props {
   placeholder?: string
   isMulti?: boolean
   isCreatable?: true
+  closeMenuOnSelect?: boolean
 }
 
 const SelectImpl = component$<Props>((props) => {
@@ -30,6 +31,7 @@ const SelectImpl = component$<Props>((props) => {
     placeholder = "Select",
     isMulti,
     isCreatable,
+    closeMenuOnSelect = true,
   } = props
 
   const {
@@ -59,7 +61,9 @@ const SelectImpl = component$<Props>((props) => {
       }
 
       filter()
-      hideMenu()
+      if (closeMenuOnSelect) {
+        hideMenu()
+      }
 
       parentEmitFn({
         newOpt: option,

@@ -56,6 +56,10 @@ export const StoreProvider = component$(() => {
     selectedOptions,
     actions: {
       filter: $(() => {
+        console.log("filtering")
+        console.log("inputSig.value", inputSig.value)
+        console.log("possibleOptions.value", possibleOptions.value)
+        console.log("selectedOptions.value", selectedOptions.value)
         filteredOptions.value = getFilteredOptions(
           possibleOptions.value,
           selectedOptions.value,
