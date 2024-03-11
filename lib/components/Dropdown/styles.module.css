@@ -18,3 +18,8 @@
   background-color: #007bff;
   color: white;
 }
+
+.qp-menu ul li[aria-hovered="true"] {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}

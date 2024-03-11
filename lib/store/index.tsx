@@ -49,17 +49,15 @@ export const StoreProvider = component$(() => {
   const possibleOptions = useSignal<OptionType[]>([])
   const filteredOptions = useSignal<OptionType[]>([])
   const selectedOptions = useSignal<OptionType[]>([])
+  const hoveredOptionIndex = useSignal<number>(-1)
 
   useContextProvider(OptionsContext, {
     possibleOptions,
     filteredOptions,
     selectedOptions,
+    hoveredOptionIndex,
     actions: {
       filter: $(() => {
-        console.log("filtering")
-        console.log("inputSig.value", inputSig.value)
-        console.log("possibleOptions.value", possibleOptions.value)
-        console.log("selectedOptions.value", selectedOptions.value)
         filteredOptions.value = getFilteredOptions(
           possibleOptions.value,
           selectedOptions.value,

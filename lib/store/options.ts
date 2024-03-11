@@ -5,6 +5,7 @@ export const OptionsContext = createContextId<{
   possibleOptions: Signal<OptionType[]>
   filteredOptions: Signal<OptionType[]>
   selectedOptions: Signal<OptionType[]>
+  hoveredOptionIndex: Signal<number>
   actions: {
     resetFilteredList: QRL<() => void>
     filter: QRL<() => void>

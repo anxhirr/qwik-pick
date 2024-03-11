@@ -4,6 +4,7 @@ import { Option } from "."
 import { MenuContext } from "../../store/menu"
 import { InputContext } from "../../store/input"
 import styles from "./styles.module.css"
+import { OptionsContext } from "../../store/options"
 
 export const Menu = component$<{
   options: OptionType[]
@@ -15,6 +16,7 @@ export const Menu = component$<{
 
   const { menuRef } = useContext(MenuContext)
   const { inputSig } = useContext(InputContext)
+  const { hoveredOptionIndex } = useContext(OptionsContext)
 
   return (
     <div ref={menuRef} class={styles["qp-menu"]}>
@@ -25,6 +27,7 @@ export const Menu = component$<{
             label={opt.label}
             onSelect={$(() => onSelect(opt, i))}
             isSelected={opt.value === inputSig.value}
+            isHovered={hoveredOptionIndex.value === i}
           />
         ))}
 

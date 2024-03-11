@@ -1,4 +1,11 @@
-import { $, Slot, component$, useContext, useTask$ } from "@builder.io/qwik"
+import {
+  $,
+  Slot,
+  component$,
+  useContext,
+  useOn,
+  useTask$,
+} from "@builder.io/qwik"
 
 import { StoreProvider } from "./store"
 import { MenuContext } from "./store/menu"
@@ -40,9 +47,10 @@ const SelectImpl = component$<Props>((props) => {
   } = useContext(MenuContext)
   const {
     inputSig,
-    actions: { clearInput },
+    actions: { clearInput, blurInput },
   } = useContext(InputContext)
   const {
+    hoveredOptionIndex,
     actions: { filter, populate, selectOption },
     filteredOptions,
   } = useContext(OptionsContext)
@@ -82,6 +90,35 @@ const SelectImpl = component$<Props>((props) => {
     track(() => value)
     if (isUndefined(value)) return
   })
+
+  useOn(
+    "keydown",
+    $((e) => {
+      const isArrowDown = e.key === "ArrowDown"
+      const isArrowUp = e.key === "ArrowUp"
+      const isEnter = e.key === "Enter"
+
+      if (isEnter) {
+        handleSelect(
+          filteredOptions.value[hoveredOptionIndex.value],
+          hoveredOptionIndex.value,
+          onSelect
+        )
+
+        blurInput()
+      }
+
+      if (!isArrowDown && !isArrowUp) return
+
+      hoveredOptionIndex.value = Math.max(
+        0,
+        Math.min(
+          filteredOptions.value.length - 1,
+          hoveredOptionIndex.value + (isArrowDown ? 1 : -1)
+        )
+      )
+    })
+  )
 
   return (
     <div class={styles["qp-container"]}>
