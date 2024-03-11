@@ -1,17 +1,22 @@
 import { component$, useContext } from "@builder.io/qwik"
 import styles from "./styles.module.css"
 import { InputContext } from "../../store/input"
+import { OptionsContext } from "../../store/options"
 
 export const ClearButton = component$<{}>(() => {
   const {
     actions: { clearInput, focusInput },
   } = useContext(InputContext)
+  const {
+    actions: { filter },
+  } = useContext(OptionsContext)
   return (
     <div
       class={styles["qp-clear-button"]}
       onClick$={() => {
         clearInput()
         focusInput()
+        filter()
       }}
     >
       <svg

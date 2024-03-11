@@ -7,6 +7,9 @@ import {
 } from "@builder.io/qwik"
 import { MenuContext } from "./menu"
 import { InputContext } from "./input"
+import { OptionsContext } from "./options"
+import { OptionType } from "../types"
+import { getFilteredOptions } from "../utils"
 
 export const StoreProvider = component$(() => {
   const showMenuSig = useSignal(false)
@@ -40,6 +43,35 @@ export const StoreProvider = component$(() => {
       clearInput,
       focusInput,
       blurInput,
+    },
+  })
+
+  const possibleOptions = useSignal<OptionType[]>([])
+  const filteredOptions = useSignal<OptionType[]>([])
+  const selectedOptions = useSignal<OptionType[]>([])
+
+  useContextProvider(OptionsContext, {
+    possibleOptions,
+    filteredOptions,
+    selectedOptions,
+    actions: {
+      filter: $(() => {
+        filteredOptions.value = getFilteredOptions(
+          possibleOptions.value,
+          selectedOptions.value,
+          inputSig.value
+        )
+      }),
+      resetFilteredList: $(() => {
+        filteredOptions.value = possibleOptions.value
+      }),
+      selectOption: $((option: OptionType) => {
+        selectedOptions.value = [...selectedOptions.value, option]
+      }),
+      populate: $((options: OptionType[]) => {
+        possibleOptions.value = options
+        filteredOptions.value = options
+      }),
     },
   })
 

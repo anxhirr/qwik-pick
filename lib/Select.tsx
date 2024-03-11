@@ -1,44 +1,35 @@
-import {
-  $,
-  Slot,
-  component$,
-  useContext,
-  useSignal,
-  useTask$,
-} from "@builder.io/qwik"
+import { $, Slot, component$, useContext, useTask$ } from "@builder.io/qwik"
 
 import { StoreProvider } from "./store"
 import { MenuContext } from "./store/menu"
 import { OptionType, ParentEmitFnType } from "./types"
-import { getFilteredOptions, isUndefined } from "./utils"
+import { isUndefined } from "./utils"
 import { Input } from "./components/Input"
 import { ClearButton } from "./components/Buttons"
 import { Menu } from "./components/Dropdown"
 import { InputContext } from "./store/input"
 import styles from "./styles.module.css"
+import { OptionsContext } from "./store/options"
 
 export interface Props {
   value: string | undefined
   options: OptionType[]
-  placeholder?: string
   onSelect: ParentEmitFnType
+  onCreate?: ParentEmitFnType
+  placeholder?: string
   isMulti?: boolean
   isCreatable?: true
-  onCreate?: ParentEmitFnType
-  closeOnOutsideClick?: boolean
-  selectedOptions?: OptionType[]
 }
 
 const SelectImpl = component$<Props>((props) => {
   const {
-    onSelect,
-    placeholder = "Select",
-    options,
     value,
+    options,
+    onSelect,
+    onCreate,
+    placeholder = "Select",
     isMulti,
     isCreatable,
-    onCreate,
-    selectedOptions = [],
   } = props
 
   const {
@@ -49,15 +40,10 @@ const SelectImpl = component$<Props>((props) => {
     inputSig,
     actions: { clearInput },
   } = useContext(InputContext)
-
-  const possibleOptions = useSignal<OptionType[]>([])
-  const filteredOptions = getFilteredOptions(
-    options,
-    selectedOptions,
-    inputSig.value
-  )
-
-  const restoreOptions = $(() => (possibleOptions.value = options))
+  const {
+    actions: { filter, populate, selectOption },
+    filteredOptions,
+  } = useContext(OptionsContext)
 
   const handleSelect = $(
     (
@@ -67,7 +53,12 @@ const SelectImpl = component$<Props>((props) => {
     ) => {
       inputSig.value = option.label
 
-      if (isMulti) clearInput()
+      if (isMulti) {
+        clearInput()
+        selectOption(option)
+      }
+
+      filter()
       hideMenu()
 
       parentEmitFn({
@@ -80,13 +71,12 @@ const SelectImpl = component$<Props>((props) => {
   useTask$(({ track }) => {
     // populates initial options
     track(() => options)
-    restoreOptions()
+    populate(options)
   })
 
   useTask$(({ track }) => {
     track(() => value)
     if (isUndefined(value)) return
-    // input.value = value
   })
 
   return (
@@ -106,7 +96,7 @@ const SelectImpl = component$<Props>((props) => {
       {showMenuSig.value && (
         <div class="absolute top-[100%] z-50 w-full">
           <Menu
-            options={filteredOptions}
+            options={filteredOptions.value}
             onSelect={$((option: OptionType, menuOptIdx: number) => {
               handleSelect(option, menuOptIdx, onSelect)
             })}
