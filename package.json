@@ -25,5 +25,20 @@
   },
   "peerDependencies": {
     "@builder.io/qwik": "^1.5.1"
-  }
+  },
+  "keywords": [
+    "qwik",
+    "qwik-pick",
+    "option-picker",
+    "combobox",
+    "input",
+    "select",
+    "multiselect",
+    "ui",
+    "ux",
+    "async",
+    "autocomplete",
+    "dropdown",
+    "menu"
+  ]
 }
