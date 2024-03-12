@@ -1,6 +1,6 @@
 .qp-container {
   max-width: min-content;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   border: 1px solid #ccc;
 }
 

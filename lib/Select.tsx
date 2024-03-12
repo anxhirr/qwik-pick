@@ -108,15 +108,22 @@ const SelectImpl = component$<Props>((props) => {
         blurInput()
       }
 
-      if (!isArrowDown && !isArrowUp) return
-
-      hoveredOptionIndex.value = Math.max(
-        0,
-        Math.min(
-          filteredOptions.value.length - 1,
-          hoveredOptionIndex.value + (isArrowDown ? 1 : -1)
+      if (isArrowDown || isArrowUp) {
+        hoveredOptionIndex.value = Math.max(
+          0,
+          Math.min(
+            filteredOptions.value.length - 1,
+            hoveredOptionIndex.value + (isArrowDown ? 1 : -1)
+          )
         )
-      )
+      }
+    })
+  )
+
+  useOn(
+    "focusout",
+    $(() => {
+      console.log("focusout")
     })
   )
 
