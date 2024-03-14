@@ -40,5 +40,6 @@
     "autocomplete",
     "dropdown",
     "menu"
-  ]
+  ],
+  "repository": "https://github.com/anxhirr/qwik-pick.git"
 }

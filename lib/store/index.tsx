@@ -9,7 +9,7 @@ import { MenuContext } from "./menu"
 import { InputContext } from "./input"
 import { OptionsContext } from "./options"
 import { OptionType } from "../types"
-import { checkIsSelected, getFilteredOptions } from "../utils"
+import { getFilteredOptions } from "../utils"
 
 export const StoreProvider = component$(() => {
   const showMenuSig = useSignal(false)
