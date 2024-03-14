@@ -16,8 +16,8 @@
 }
 
 .qp-menu ul li[aria-selected="true"] {
-  background-color: #007bff;
-  color: white;
+  background-color: #007bff !important;
+  color: white !important;
 }
 
 .qp-menu ul li[aria-hovered="true"] {

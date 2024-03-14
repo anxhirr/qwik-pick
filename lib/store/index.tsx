@@ -82,14 +82,7 @@ export const StoreProvider = component$(() => {
         const hoveredOptionExists = hoveredOptionIndex.value !== -1
         const index = hoveredOptionExists ? hoveredOptionIndex.value : 0
 
-        const chosenOption = filteredOptions.value[index]
-        const isChosenOptionSelected = checkIsSelected(
-          selectedOptions.value,
-          chosenOption
-        )
-        isChosenOptionSelected
-          ? (hoveredOptionIndex.value = -1)
-          : (hoveredOptionIndex.value = index)
+        hoveredOptionIndex.value = index
       }),
     },
   })
