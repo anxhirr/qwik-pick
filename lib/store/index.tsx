@@ -78,6 +78,11 @@ export const StoreProvider = component$(() => {
         possibleOptions.value = options
         filteredOptions.value = options
       }),
+      hoverOnExistingOrFirst: $(() => {
+        const isHovered = hoveredOptionIndex.value !== -1
+        const index = isHovered ? hoveredOptionIndex.value : 0
+        hoveredOptionIndex.value = index
+      }),
     },
   })
 

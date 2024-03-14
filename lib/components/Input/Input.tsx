@@ -7,13 +7,14 @@ import { OptionsContext } from "../../store/options"
 export const Input = component$<{
   placeholder?: string
   openMenuOnFocus?: boolean
-}>(({ placeholder, openMenuOnFocus = true }) => {
+  isMulti: boolean
+}>(({ placeholder, openMenuOnFocus = true, isMulti }) => {
   const {
     actions: { showMenu },
   } = useContext(MenuContext)
   const { inputSig, inputRef } = useContext(InputContext)
   const {
-    actions: { filter },
+    actions: { filter, hoverOnExistingOrFirst },
   } = useContext(OptionsContext)
 
   return (
@@ -26,9 +27,14 @@ export const Input = component$<{
       onInput$={(e) => {
         const value = (e.target as HTMLInputElement).value
         inputSig.value = value
-        filter()
+        filter(isMulti)
       }}
-      onFocus$={() => openMenuOnFocus && showMenu()}
+      onFocus$={() => {
+        if (openMenuOnFocus) {
+          showMenu()
+          hoverOnExistingOrFirst()
+        }
+      }}
     />
   )
 })

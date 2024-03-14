@@ -13,5 +13,6 @@ export const OptionsContext = createContextId<{
     populate: QRL<(options: OptionType[]) => void>
 
     selectOption: QRL<(option: OptionType) => void>
+    hoverOnExistingOrFirst: QRL<() => void>
   }
 }>("OptionsContext")
