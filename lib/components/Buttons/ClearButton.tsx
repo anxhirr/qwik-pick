@@ -8,12 +8,17 @@ export const ClearButton = component$<{}>(() => {
     actions: { clearInput, focusInput },
   } = useContext(InputContext)
   const {
-    actions: { filter },
+    actions: { resetFilteredList, resetSelectedList },
   } = useContext(OptionsContext)
   return (
     <div
       class={styles["qp-clear-button"]}
-      onClick$={() => clearInput().then(focusInput).then(filter)}
+      onClick$={() =>
+        clearInput()
+          .then(resetFilteredList)
+          .then(resetSelectedList)
+          .then(focusInput)
+      }
     >
       <svg
         width="100%"

@@ -5,6 +5,7 @@ import { MenuContext } from "../../store/menu"
 import { InputContext } from "../../store/input"
 import styles from "./styles.module.css"
 import { OptionsContext } from "../../store/options"
+import { checkIsSelected } from "../../utils"
 
 export const Menu = component$<{
   options: OptionType[]
@@ -16,20 +17,22 @@ export const Menu = component$<{
 
   const { menuRef } = useContext(MenuContext)
   const { inputSig } = useContext(InputContext)
-  const { hoveredOptionIndex } = useContext(OptionsContext)
+  const { hoveredOptionIndex, selectedOptions } = useContext(OptionsContext)
 
   return (
     <div ref={menuRef} class={styles["qp-menu"]}>
       <ul>
-        {options.map((opt, i) => (
-          <Option
-            key={opt.value}
-            label={opt.label}
-            onSelect={$(() => onSelect(opt, i))}
-            isSelected={opt.value === inputSig.value}
-            isHovered={hoveredOptionIndex.value === i}
-          />
-        ))}
+        {options.map((opt, i) => {
+          return (
+            <Option
+              key={opt.value}
+              label={opt.label}
+              onSelect={$(() => onSelect(opt, i))}
+              isSelected={checkIsSelected(selectedOptions.value, opt)}
+              isHovered={hoveredOptionIndex.value === i}
+            />
+          )
+        })}
 
         {noResultsFound && (
           <>

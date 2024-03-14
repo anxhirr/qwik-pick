@@ -8,7 +8,8 @@ export const OptionsContext = createContextId<{
   hoveredOptionIndex: Signal<number>
   actions: {
     resetFilteredList: QRL<() => void>
-    filter: QRL<() => void>
+    resetSelectedList: QRL<() => void>
+    filter: QRL<(isMulti: boolean) => void>
     populate: QRL<(options: OptionType[]) => void>
 
     selectOption: QRL<(option: OptionType) => void>

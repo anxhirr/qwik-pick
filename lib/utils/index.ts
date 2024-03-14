@@ -25,9 +25,19 @@ const filterByOptions = (
 export const getFilteredOptions = (
   options: OptionType[],
   selectedOptions: OptionType[],
-  input: string
+  input: string,
+  isMulti: boolean
 ) => {
   const inputFiltered = filterByInput(options, input)
-  const finalOptions = filterByOptions(inputFiltered, selectedOptions)
+  const finalOptions = isMulti
+    ? filterByOptions(inputFiltered, selectedOptions)
+    : inputFiltered
   return finalOptions
+}
+
+export const checkIsSelected = (
+  selectedOptions: OptionType[],
+  option: OptionType
+) => {
+  return selectedOptions.some((opt) => opt.value === option.value)
 }

@@ -18,25 +18,34 @@ import { InputContext } from "./store/input"
 import styles from "./styles.module.css"
 import { OptionsContext } from "./store/options"
 
+type OnChangeFnType = (selected: OptionType | OptionType[]) => void
+
 export interface Props {
-  value: string | undefined
   options: OptionType[]
-  onSelect: ParentEmitFnType
+  onChange: OnChangeFnType
+
+  initialValue?: string
+  defaultOption?: OptionType
+  defaultOptions?: OptionType[]
+  onSelect?: ParentEmitFnType
   onCreate?: ParentEmitFnType
   placeholder?: string
   isMulti?: boolean
-  isCreatable?: true
+  isCreatable?: boolean
   closeMenuOnSelect?: boolean
 }
 
 const SelectImpl = component$<Props>((props) => {
   const {
-    value,
     options,
+    onChange,
+    initialValue,
+    defaultOption,
+    defaultOptions,
     onSelect,
     onCreate,
     placeholder = "Select",
-    isMulti,
+    isMulti = false,
     isCreatable,
     closeMenuOnSelect = true,
   } = props
@@ -50,6 +59,7 @@ const SelectImpl = component$<Props>((props) => {
     actions: { clearInput, blurInput },
   } = useContext(InputContext)
   const {
+    selectedOptions,
     hoveredOptionIndex,
     actions: { filter, populate, selectOption },
     filteredOptions,
@@ -59,26 +69,26 @@ const SelectImpl = component$<Props>((props) => {
     (
       option: OptionType,
       menuOptIdx: number,
-      parentEmitFn: ParentEmitFnType
+      parentEmitFn: ParentEmitFnType | undefined
     ) => {
-      inputSig.value = option.label
+      isMulti ? clearInput() : (inputSig.value = option.label)
 
-      if (isMulti) {
-        clearInput()
-        selectOption(option)
-      }
+      selectOption(option)
 
-      filter()
+      filter(isMulti)
+
       if (closeMenuOnSelect) {
         hideMenu()
       }
 
-      parentEmitFn({
-        newOpt: option,
-        menuOptIdx,
-      })
+      parentEmitFn?.({ newOpt: option, menuOptIdx })
     }
   )
+
+  useTask$(({ track }) => {
+    track(() => selectedOptions)
+    onChange(selectedOptions.value)
+  })
 
   useTask$(({ track }) => {
     // populates initial options
@@ -86,9 +96,11 @@ const SelectImpl = component$<Props>((props) => {
     populate(options)
   })
 
-  useTask$(({ track }) => {
-    track(() => value)
-    if (isUndefined(value)) return
+  useTask$(() => {
+    // populate initial values
+    if (!isUndefined(initialValue)) inputSig.value = initialValue
+    selectedOptions.value =
+      defaultOptions || (defaultOption ? [defaultOption] : [])
   })
 
   useOn(
@@ -122,9 +134,7 @@ const SelectImpl = component$<Props>((props) => {
 
   useOn(
     "focusout",
-    $(() => {
-      console.log("focusout")
-    })
+    $(() => {})
   )
 
   return (
@@ -135,10 +145,8 @@ const SelectImpl = component$<Props>((props) => {
             <Slot />
           </div>
         )}
-        <>
-          <Input placeholder={placeholder} />
-        </>
 
+        <Input placeholder={placeholder} />
         <ClearButton />
       </div>
       {showMenuSig.value && (

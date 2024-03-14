@@ -8,11 +8,11 @@
 .qp-menu ul li {
   padding: 0.5rem;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .qp-menu ul li:hover {
   background-color: #f0f0f0;
-  border-radius: 5px;
 }
 
 .qp-menu ul li[aria-selected="true"] {
@@ -22,7 +22,6 @@
 
 .qp-menu ul li[aria-hovered="true"] {
   background-color: #f0f0f0;
-  border-radius: 5px;
   position: relative;
 }
 

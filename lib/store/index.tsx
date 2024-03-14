@@ -57,15 +57,19 @@ export const StoreProvider = component$(() => {
     selectedOptions,
     hoveredOptionIndex,
     actions: {
-      filter: $(() => {
+      filter: $((isMulti: boolean) => {
         filteredOptions.value = getFilteredOptions(
           possibleOptions.value,
           selectedOptions.value,
-          inputSig.value
+          inputSig.value,
+          isMulti
         )
       }),
       resetFilteredList: $(() => {
         filteredOptions.value = possibleOptions.value
+      }),
+      resetSelectedList: $(() => {
+        selectedOptions.value = []
       }),
       selectOption: $((option: OptionType) => {
         selectedOptions.value = [...selectedOptions.value, option]
