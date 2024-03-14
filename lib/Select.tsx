@@ -146,7 +146,7 @@ const SelectImpl = component$<Props>((props) => {
           </div>
         )}
 
-        <Input placeholder={placeholder} />
+        <Input isMulti={isMulti} placeholder={placeholder} />
         <ClearButton />
       </div>
       {showMenuSig.value && (

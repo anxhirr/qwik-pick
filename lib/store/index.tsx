@@ -9,7 +9,7 @@ import { MenuContext } from "./menu"
 import { InputContext } from "./input"
 import { OptionsContext } from "./options"
 import { OptionType } from "../types"
-import { getFilteredOptions } from "../utils"
+import { checkIsSelected, getFilteredOptions } from "../utils"
 
 export const StoreProvider = component$(() => {
   const showMenuSig = useSignal(false)
@@ -79,9 +79,17 @@ export const StoreProvider = component$(() => {
         filteredOptions.value = options
       }),
       hoverOnExistingOrFirst: $(() => {
-        const isHovered = hoveredOptionIndex.value !== -1
-        const index = isHovered ? hoveredOptionIndex.value : 0
-        hoveredOptionIndex.value = index
+        const hoveredOptionExists = hoveredOptionIndex.value !== -1
+        const index = hoveredOptionExists ? hoveredOptionIndex.value : 0
+
+        const chosenOption = filteredOptions.value[index]
+        const isChosenOptionSelected = checkIsSelected(
+          selectedOptions.value,
+          chosenOption
+        )
+        isChosenOptionSelected
+          ? (hoveredOptionIndex.value = -1)
+          : (hoveredOptionIndex.value = index)
       }),
     },
   })
