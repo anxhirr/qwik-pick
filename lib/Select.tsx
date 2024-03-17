@@ -1,11 +1,4 @@
-import {
-  $,
-  Slot,
-  component$,
-  useContext,
-  useOn,
-  useTask$,
-} from "@builder.io/qwik"
+import { $, component$, useContext, useOn, useTask$ } from "@builder.io/qwik"
 
 import { StoreProvider } from "./store"
 import { MenuContext } from "./store/menu"
@@ -17,6 +10,7 @@ import { Menu } from "./components/Dropdown"
 import { InputContext } from "./store/input"
 import styles from "./styles.module.css"
 import { OptionsContext } from "./store/options"
+import { MultiSelOptionButton } from "./components/Buttons/MultiSelOptionButton"
 
 type OnChangeFnType = (selected: OptionType | OptionType[]) => void
 
@@ -61,7 +55,7 @@ const SelectImpl = component$<Props>((props) => {
   const {
     selectedOptions,
     hoveredOptionIndex,
-    actions: { filter, populate, selectOption },
+    actions: { filter, populate, selectOption, removeOption },
     filteredOptions,
   } = useContext(OptionsContext)
 
@@ -84,6 +78,11 @@ const SelectImpl = component$<Props>((props) => {
       parentEmitFn?.({ newOpt: option, menuOptIdx })
     }
   )
+
+  const handleRemove = $((option: OptionType) => {
+    removeOption(option)
+    filter(isMulti)
+  })
 
   useTask$(({ track }) => {
     track(() => selectedOptions)
@@ -142,7 +141,15 @@ const SelectImpl = component$<Props>((props) => {
       <div class={styles["qp-wrapper"]}>
         {isMulti && (
           <div class="flex flex-wrap items-center gap-2 overflow-hidden">
-            <Slot />
+            {selectedOptions.value.map((opt) => (
+              <MultiSelOptionButton
+                label={opt.label}
+                onRemove={$(() => {
+                  handleRemove(opt)
+                })}
+                key={opt.value}
+              />
+            ))}
           </div>
         )}
 

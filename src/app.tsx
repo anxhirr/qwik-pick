@@ -24,6 +24,7 @@ export const App = component$(() => {
         onChange={$(() => {
           handleOnChange()
         })}
+        isMulti
       />
     </>
   )

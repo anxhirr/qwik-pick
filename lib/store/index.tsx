@@ -74,6 +74,11 @@ export const StoreProvider = component$(() => {
       selectOption: $((option: OptionType) => {
         selectedOptions.value = [...selectedOptions.value, option]
       }),
+      removeOption: $((option: OptionType) => {
+        selectedOptions.value = selectedOptions.value.filter(
+          (opt) => opt.value !== option.value
+        )
+      }),
       populate: $((options: OptionType[]) => {
         possibleOptions.value = options
         filteredOptions.value = options
